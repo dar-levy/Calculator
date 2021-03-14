@@ -36,5 +36,13 @@ namespace Calculator.Base
                 throw new Exception("You're missing parenthesis");
             }
         }
+        
+        private void CheckStandaloneParens(string str)
+        {
+            if (str.Contains("()"))
+            {
+                throw new Exception("No stand-alone parenthesis allowed");
+            }
+        }
     }
 }
