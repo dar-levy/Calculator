@@ -10,6 +10,20 @@ namespace Calculator.Base
         private int _closeParensCounter;
         private char _previous = '0';
         
+        public void Validate(string equation)
+        {
+            if (equation == null) return;
+            CheckStandaloneParens(equation);
+            foreach (var item in equation)
+            {
+                if (char.IsWhiteSpace(item)) continue;
+                CheckUnknownToken(item);
+                CheckOpenCloseParens(item, equation);
+                CheckSuccessorOperators(_previous, item);
+                _previous = item;
+            }
+        }
+        
         private void CheckUnknownToken(char item)
         {
             if (!char.IsDigit(item) && !Config.Operators.Contains(item) && item !='(' && item != ')')
