@@ -25,7 +25,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/Calculator.Core.csproj": {
+                "projectPath": "/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/Calculator.Core.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

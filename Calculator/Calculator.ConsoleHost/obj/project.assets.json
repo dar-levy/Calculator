@@ -5,6 +5,9 @@
       "Calculator.Base/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "Calculator.Core": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/Calculator.Base.dll": {}
         },
