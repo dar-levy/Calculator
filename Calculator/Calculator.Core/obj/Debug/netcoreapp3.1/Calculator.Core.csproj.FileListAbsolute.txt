@@ -1,0 +1,9 @@
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/bin/Debug/netcoreapp3.1/Calculator.Core.deps.json
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/bin/Debug/netcoreapp3.1/Calculator.Core.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/bin/Debug/netcoreapp3.1/Calculator.Core.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/obj/Debug/netcoreapp3.1/Calculator.Core.csprojAssemblyReference.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/obj/Debug/netcoreapp3.1/Calculator.Core.AssemblyInfoInputs.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/obj/Debug/netcoreapp3.1/Calculator.Core.AssemblyInfo.cs
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/obj/Debug/netcoreapp3.1/Calculator.Core.csproj.CoreCompileInputs.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/obj/Debug/netcoreapp3.1/Calculator.Core.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Core/obj/Debug/netcoreapp3.1/Calculator.Core.pdb

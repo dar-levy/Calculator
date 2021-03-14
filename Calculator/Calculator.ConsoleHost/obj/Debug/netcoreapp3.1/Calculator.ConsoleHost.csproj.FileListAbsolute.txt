@@ -1,0 +1,17 @@
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.ConsoleHost.deps.json
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.ConsoleHost.runtimeconfig.json
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.ConsoleHost.runtimeconfig.dev.json
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.ConsoleHost.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.ConsoleHost.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.csprojAssemblyReference.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.AssemblyInfoInputs.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.AssemblyInfo.cs
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.csproj.CoreCompileInputs.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.genruntimeconfig.cache
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.Base.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.Core.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.Base.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/bin/Debug/netcoreapp3.1/Calculator.Core.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.ConsoleHost/obj/Debug/netcoreapp3.1/Calculator.ConsoleHost.csproj.CopyComplete

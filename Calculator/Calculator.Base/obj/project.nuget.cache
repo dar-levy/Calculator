@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "oECmipNLYd59NNqwfPcM60IzAsBWKAHDBct2SStW3YonqVSuU6ge8p970pdkLGdK5MRQPxbXcdFfcOD8l24xMg==",
+  "success": true,
+  "projectFilePath": "/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/Calculator.Base.csproj",
+  "expectedPackageFiles": [
+    "/Users/darlevy/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+  ],
+  "logs": []
+}
