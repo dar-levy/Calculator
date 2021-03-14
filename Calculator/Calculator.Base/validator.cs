@@ -44,5 +44,13 @@ namespace Calculator.Base
                 throw new Exception("No stand-alone parenthesis allowed");
             }
         }
+        
+        private void CheckSuccessorOperators(char previous, char current)
+        {
+            if (Config.Operators.Contains(previous) && Config.Operators.Contains(current))
+            {
+                throw new Exception("Can not use more than one operator for each operand");
+            }
+        }
     }
 }
