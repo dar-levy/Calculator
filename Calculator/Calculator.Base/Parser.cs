@@ -19,17 +19,12 @@ namespace Calculator.Base
             _tokens = new List<Token>();
         }
         
-        public void Parse(string equation)
+        public Stack<Token> Parse(string equation)
         {
             var trimmedEquation = Trim(equation);
             SplitToTokens(trimmedEquation);
             MoveTokensToStack();
-            foreach (var token in _tokenStack)
-            {
-                Console.WriteLine("-----------");
-                Console.WriteLine($"Symbol: {token.Symbol}");
-                Console.WriteLine($"Priority: {token.Priority}");
-            }
+            return _tokenStack;
         }
         
         private string Trim(string stringWithSpaces)
