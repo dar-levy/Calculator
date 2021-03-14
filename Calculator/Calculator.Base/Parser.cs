@@ -15,5 +15,10 @@ namespace Calculator.Base
             _tokenStack = new Stack<Token>();
             _tokens = new List<Token>();
         }
+        
+        private string Trim(string stringWithSpaces)
+        {
+            return stringWithSpaces.Replace(" ","");
+        }
     }
 }
