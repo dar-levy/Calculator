@@ -16,6 +16,9 @@
         }
       },
       "Calculator.Base/1.0.0": {
+        "dependencies": {
+          "Calculator.Core": "1.0.0"
+        },
         "runtime": {
           "Calculator.Base.dll": {}
         }

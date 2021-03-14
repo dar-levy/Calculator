@@ -7,3 +7,6 @@
 /Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/obj/Debug/netcoreapp3.1/Calculator.Base.csproj.CoreCompileInputs.cache
 /Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/obj/Debug/netcoreapp3.1/Calculator.Base.dll
 /Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/obj/Debug/netcoreapp3.1/Calculator.Base.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/bin/Debug/netcoreapp3.1/Calculator.Core.dll
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/bin/Debug/netcoreapp3.1/Calculator.Core.pdb
+/Users/darlevy/RiderProjects/Calculator/Calculator/Calculator.Base/obj/Debug/netcoreapp3.1/Calculator.Base.csproj.CopyComplete
