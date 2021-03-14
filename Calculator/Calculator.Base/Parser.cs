@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Calculator.Base.config;
 using Calculator.Core.Entities;
 
@@ -62,5 +63,21 @@ namespace Calculator.Base
         {
             return _countOpenParenthesis - _countCloseParenthesis;
         }
+        
+        private void MoveTokensToStack()
+        {
+            var counter = 0;
+            while (counter <= _tokens.Max(token => token.Priority))
+            {
+                var tokensGroup = _tokens.FindAll(token => token.Priority == counter);
+                foreach (var token in tokensGroup)
+                {
+                    _tokenStack.Push(token);
+                }
+
+                counter++;
+            }
+        }
+
     }
 }
