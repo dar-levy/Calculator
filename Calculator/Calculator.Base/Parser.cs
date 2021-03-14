@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Calculator.Base.config;
@@ -16,6 +17,19 @@ namespace Calculator.Base
         {
             _tokenStack = new Stack<Token>();
             _tokens = new List<Token>();
+        }
+        
+        public void Parse(string equation)
+        {
+            var trimmedEquation = Trim(equation);
+            SplitToTokens(trimmedEquation);
+            MoveTokensToStack();
+            foreach (var token in _tokenStack)
+            {
+                Console.WriteLine("-----------");
+                Console.WriteLine($"Symbol: {token.Symbol}");
+                Console.WriteLine($"Priority: {token.Priority}");
+            }
         }
         
         private string Trim(string stringWithSpaces)
