@@ -7,7 +7,13 @@ namespace Calculator.Base
     {
         private int _countOpenParenthesis;
         private int _countCloseParenthesis;
-        private List<Token> _tokens;
         private Stack<Token> _tokenStack;
+        private List<Token> _tokens;
+        
+        public Parser()
+        {
+            _tokenStack = new Stack<Token>();
+            _tokens = new List<Token>();
+        }
     }
 }
