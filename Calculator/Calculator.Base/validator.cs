@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Calculator.Base.config;
 
 namespace Calculator.Base
@@ -15,6 +16,24 @@ namespace Calculator.Base
             {
                 throw new Exception(
                     $"An unknown character '{item}' in your equation, Please delete it and try again");
+            }
+        }
+        
+        private void CheckOpenCloseParens(char item, string items)
+        {
+            switch (item)
+            {
+                case '(':
+                    _openParensCounter++;
+                    break;
+                case ')':
+                    _closeParensCounter++;
+                    break;
+            }
+
+            if (item.Equals(items.Last()) && _openParensCounter != _closeParensCounter || _closeParensCounter > _openParensCounter)
+            {
+                throw new Exception("You're missing parenthesis");
             }
         }
     }
