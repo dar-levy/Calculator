@@ -10,16 +10,16 @@ namespace Calculator.Base
     {
         private int _countOpenParenthesis;
         private int _countCloseParenthesis;
-        private Stack<Token> _tokenStack;
+        private Stack<string> _tokenStack;
         private List<Token> _tokens;
         
         public Parser()
         {
-            _tokenStack = new Stack<Token>();
+            _tokenStack = new Stack<string>();
             _tokens = new List<Token>();
         }
         
-        public Stack<Token> Parse(string equation)
+        public Stack<string> Parse(string equation)
         {
             var trimmedEquation = Trim(equation);
             SplitToTokens(trimmedEquation);
@@ -81,7 +81,7 @@ namespace Calculator.Base
                 var tokensGroup = _tokens.FindAll(token => token.Priority == counter);
                 foreach (var token in tokensGroup)
                 {
-                    _tokenStack.Push(token);
+                    _tokenStack.Push(token.Symbol);
                 }
 
                 counter++;

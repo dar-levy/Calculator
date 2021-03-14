@@ -4,29 +4,29 @@ namespace Calculator.Base
 {
     public class Calculator
     {
-        public double Add(double rightOperand, double leftOperand)
+        public Func<double,double,double> Add()
         {
-            return leftOperand + rightOperand;
+            return (a,b) => a+b;
         }
 
-        public double Subtract(double rightOperand, double leftOperand)
+        public Func<double,double,double> Subtract()
         {
-            return leftOperand - rightOperand;
+            return (a,b) => a-b;
         }
 
-        public double Multiply(double rightOperand, double leftOperand)
+        public Func<double,double,double> Multiply()
         {
-            return leftOperand * rightOperand;
+            return (a,b) => a*b;
         }
         
-        public double Divide(double rightOperand, double leftOperand)
+        public Func<double,double,double> Divide()
         {
-            return leftOperand / rightOperand;
+            return (a,b) => a/b;
         }
         
-        public double Power(double rightOperand, double leftOperand)
+        public Func<double,double,double> Power()
         {
-            return Math.Pow(leftOperand, rightOperand);
+            return Math.Pow;
         }
     }
 }
