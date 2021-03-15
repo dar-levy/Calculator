@@ -8,7 +8,7 @@ namespace Calculator.Base
     {
         private int _openParensCounter;
         private int _closeParensCounter;
-        private char _previous = '0';
+        private string _previous;
         
         public void Validate(string equation)
         {
@@ -20,16 +20,17 @@ namespace Calculator.Base
                 CheckUnknownToken(item);
                 CheckEdgesForOperators(equation);
                 CheckOpenCloseParens(item, equation);
-                CheckSuccessorOperators(_previous, item);
-                _previous = item;
+                CheckSuccessorOperators(_previous, item.ToString());
+                _previous = item.ToString();
             }
         }
 
         private void CheckEdgesForOperators(string equation)
         {
-            var firstToken = equation[0];
-            var lastToken = equation.Last();
-            if ((Config.Operators.Contains(firstToken)  || Config.Operators.Contains(lastToken)) && firstToken != '-' || lastToken != '-')
+            var firstToken = equation[0].ToString();
+            var lastToken = equation.Last().ToString();
+            
+            if ((Config.Operators.Contains(firstToken)  || Config.Operators.Contains(lastToken)) && (firstToken != "-" || lastToken != "-"))
             {
                 throw new Exception("Equation must not begin\\end with non-unary operator");
             }
@@ -37,7 +38,7 @@ namespace Calculator.Base
         
         private void CheckUnknownToken(char item)
         {
-            if (!char.IsDigit(item) && !Config.Operators.Contains(item) && item !='(' && item != ')')
+            if (!char.IsDigit(item) && !Config.Operators.Contains(item.ToString()) && item !='(' && item != ')')
             {
                 throw new Exception(
                     $"An unknown character '{item}' in your equation, Please delete it and try again");
@@ -70,7 +71,7 @@ namespace Calculator.Base
             }
         }
         
-        private void CheckSuccessorOperators(char previous, char current)
+        private void CheckSuccessorOperators(string previous, string current)
         {
             if (Config.Operators.Contains(previous) && Config.Operators.Contains(current))
             {

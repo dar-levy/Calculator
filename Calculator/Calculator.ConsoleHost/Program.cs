@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Calculator.Base;
+using Calculator.Core.Entities;
 
 namespace Calculator
 {
@@ -16,36 +18,48 @@ namespace Calculator
             var input = Console.ReadLine();
             
             validator.Validate(input);
-            var tokenStack = parser.Parse(input);
-            var result = Solve(tokenStack);
+            var tokens = parser.Parse(input);
+            var result = Solve(tokens);
 
             Console.WriteLine($"\nResult: {result}");
         }
 
-        private static string Solve(Stack<string> tokenStack)
+        private static string Solve((Stack<IToken>, List<IToken>) tokens)
         {
-            while (tokenStack.Count >= 3)
+            var tokenStack = tokens.Item1;
+            var numericList = tokens.Item2;
+            
+            while (tokenStack.Count >= 1)
             {
-                var subResult = EvalSubResult(tokenStack).ToString(CultureInfo.InvariantCulture);
-                tokenStack.Push(subResult);
+                var subResult = EvalSubResult(tokenStack, numericList);
+                numericList.Add(subResult);
             }
 
-            return tokenStack.Pop();            
+            return numericList.Last().Symbol;
         }
         
-        private static double EvalSubResult(Stack<string> tokenStack)
+        private static IToken EvalSubResult(Stack<IToken> tokenStack, List<IToken> numericList)
         {
-            var rightOperand = Convert.ToDouble(tokenStack.Pop());
-            var op = GetOperatorFunctionality(tokenStack.Pop());
-            var leftOperand = Convert.ToDouble(tokenStack.Pop());
+            var rightOperand = GetLastTokenInList(numericList);
+            var leftOperand = GetLastTokenInList(numericList);
+            var op = GetOperatorFunctionality(tokenStack.Pop().Symbol);
             return Eval(leftOperand, rightOperand, op);
         }
 
-        private static double Eval(double leftOperand, double rightOperand, Func<double, double, double> op)
+        private static double GetLastTokenInList(List<IToken> numericList)
+        {
+            var lastNumber = numericList.Last();
+            numericList.Remove(numericList.Last());
+            return Convert.ToDouble(lastNumber.Symbol);
+        }
+
+        private static IToken Eval(double leftOperand, double rightOperand, Func<double, double, double> op)
         {
             var lo = Convert.ToDouble(leftOperand);
             var ro = Convert.ToDouble(rightOperand);
-            return op(lo, ro);
+            var subResult = op(lo, ro).ToString(CultureInfo.InvariantCulture);
+            var resultToken = new Token(subResult, 2);
+            return resultToken;
         }
 
         private static Func<double, double, double> GetOperatorFunctionality(string operatorString)

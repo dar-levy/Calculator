@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Calculator.Base.config;
@@ -9,21 +10,24 @@ namespace Calculator.Base
     {
         private int _countOpenParenthesis;
         private int _countCloseParenthesis;
-        private Stack<string> _tokenStack;
+        private List<IToken> _numericList;
+        private Stack<IToken> _operatorStack;
         private List<Token> _tokens;
         
         public Parser()
         {
-            _tokenStack = new Stack<string>();
+            _numericList = new List<IToken>();
+            _operatorStack = new Stack<IToken>();
             _tokens = new List<Token>();
         }
         
-        public Stack<string> Parse(string equation)
+        public (Stack<IToken>, List<IToken>) Parse(string equation)
         {
             var trimmedEquation = Trim(equation);
             SplitToTokens(trimmedEquation);
-            MoveTokensToStack();
-            return _tokenStack;
+            MoveOperatorsToStack();
+            MoveNumbersToList();
+            return (_operatorStack, _numericList);
         }
         
         private string Trim(string stringWithSpaces)
@@ -59,7 +63,7 @@ namespace Calculator.Base
                     _tokens.Add(token);
                     index += --counter;
                 }
-                else if (Config.Operators.Contains(item))
+                else if (Config.Operators.Contains(item.ToString()))
                 {
                     var token = new Token(item.ToString(), priority);
                     _tokens.Add(token);
@@ -72,12 +76,28 @@ namespace Calculator.Base
             return _countOpenParenthesis - _countCloseParenthesis;
         }
         
-        private int EvalPriorityByOperator(Token token)
+        /*private int EvalPriorityByOperator(Token token)
         {
             return token.Priority + 1;
-        }
+        }*/
         
-        private void MoveTokensToStack()
+        private void MoveOperatorsToStack()
+        {
+            var counter = 0;
+            while (counter <= _tokens.Max(token => token.Priority))
+            {
+                var tokensGroup = _tokens.FindAll(token => token.Priority == counter && Config.Operators.Contains(token.Symbol));
+                _tokens.RemoveAll(token => token.Priority == counter && Config.Operators.Contains(token.Symbol));
+                foreach (var token in tokensGroup)
+                {
+                    _operatorStack.Push(token);
+                }
+
+                counter++;
+            }
+        }
+
+        private void MoveNumbersToList()
         {
             var counter = 0;
             while (counter <= _tokens.Max(token => token.Priority))
@@ -85,7 +105,7 @@ namespace Calculator.Base
                 var tokensGroup = _tokens.FindAll(token => token.Priority == counter);
                 foreach (var token in tokensGroup)
                 {
-                    _tokenStack.Push(token.Symbol);
+                    _numericList.Add(token);
                 }
 
                 counter++;

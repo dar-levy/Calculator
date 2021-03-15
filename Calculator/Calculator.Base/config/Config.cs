@@ -4,6 +4,6 @@ namespace Calculator.Base.config
 {
     public class Config
     {
-        public static readonly List<char> Operators = new List<char>{'+', '-', '*', '/', '^'};
+        public static readonly List<string> Operators = new List<string>{"+", "-", "*", "/", "^"};
     }
 }

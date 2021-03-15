@@ -1,6 +1,6 @@
 namespace Calculator.Core.Entities
 {
-    public class Token
+    public class Token : IToken
     {
         public string Symbol { get; }
         public int Priority { get; }
