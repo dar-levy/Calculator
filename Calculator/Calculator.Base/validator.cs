@@ -18,9 +18,20 @@ namespace Calculator.Base
             {
                 if (char.IsWhiteSpace(item)) continue;
                 CheckUnknownToken(item);
+                CheckEdgesForOperators(equation);
                 CheckOpenCloseParens(item, equation);
                 CheckSuccessorOperators(_previous, item);
                 _previous = item;
+            }
+        }
+
+        private void CheckEdgesForOperators(string equation)
+        {
+            var firstToken = equation[0];
+            var lastToken = equation.Last();
+            if ((Config.Operators.Contains(firstToken)  || Config.Operators.Contains(lastToken)) && firstToken != '-' || lastToken != '-')
+            {
+                throw new Exception("Equation must not begin\\end with non-unary operator");
             }
         }
         

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Calculator.Base.config;
@@ -37,7 +36,7 @@ namespace Calculator.Base
             for (var index = 0; index < str.Length; index++)
             {
                 var item = str[index];
-                var priority = EvalPriority();
+                var priority = EvalPriorityByParenthesis();
                 
                 if (item == '(')
                 {
@@ -68,9 +67,14 @@ namespace Calculator.Base
             }
         }
         
-        private int EvalPriority()
+        private int EvalPriorityByParenthesis()
         {
             return _countOpenParenthesis - _countCloseParenthesis;
+        }
+        
+        private int EvalPriorityByOperator(Token token)
+        {
+            return token.Priority + 1;
         }
         
         private void MoveTokensToStack()
@@ -87,6 +91,5 @@ namespace Calculator.Base
                 counter++;
             }
         }
-
     }
 }
