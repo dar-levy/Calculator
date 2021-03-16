@@ -1,30 +1,32 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Calculator.Base.config;
 using Calculator.Core.Entities;
+using Calculator.Base.config;
+using System.Linq;
 
 namespace Calculator.Base
 {
     public class Parser
     {
-        private int _countOpenParenthesis;
-        private int _countCloseParenthesis;
-        private List<IToken> _numericList;
-        private Stack<IToken> _operatorStack;
-        private List<Token> _tokens;
+        private int _totalBrackets;
+        private readonly List<Token> _tokens;
+        private readonly List<IToken> _specifiedTokens;
+        private readonly List<IToken> _numericList;
+        private readonly Stack<IToken> _operatorStack;
         
         public Parser()
         {
+            _tokens = new List<Token>();
+            _specifiedTokens = new List<IToken>();
             _numericList = new List<IToken>();
             _operatorStack = new Stack<IToken>();
-            _tokens = new List<Token>();
         }
         
         public (Stack<IToken>, List<IToken>) Parse(string equation)
         {
             var trimmedEquation = Trim(equation);
-            SplitToTokens(trimmedEquation);
+            ConvertStringToListOfTokens(trimmedEquation);
+            SplitToTokens();
             MoveOperatorsToStack();
             MoveNumbersToList();
             return (_operatorStack, _numericList);
@@ -34,81 +36,110 @@ namespace Calculator.Base
         {
             return stringWithSpaces.Replace(" ","");
         }
-        
-        private void SplitToTokens(string str)
+
+        private void ConvertStringToListOfTokens(string equation)
         {
-            for (var index = 0; index < str.Length; index++)
+            foreach (var item in equation)
             {
-                var item = str[index];
+                var token = new Token(item.ToString(), -1);
+                _tokens.Add(token);
+            }
+        }
+        
+        private void SplitToTokens()
+        {
+            for (var tokenIndex = 0; tokenIndex < _tokens.Count; tokenIndex++)
+            {
+                var tokenSymbol = _tokens[tokenIndex].Symbol;
                 var priority = EvalPriorityByParenthesis();
                 
-                if (item == '(')
-                {
-                    _countOpenParenthesis++;
-                }
-                else if (item == ')')
-                {
-                    _countCloseParenthesis++;
-                }
-                else if (char.IsDigit(item))
-                {
-                    var completeNumber = string.Empty;
-                    var counter = 0;
-                    while (index+counter < str.Length && char.IsDigit(str[index+counter]))
-                    {
-                        completeNumber += str[index + counter];
-                        counter++;
-                    }
-                    var token = new Token(completeNumber, priority);
-                    _tokens.Add(token);
-                    index += --counter;
-                }
-                else if (Config.Operators.Contains(item.ToString()))
-                {
-                    var token = new Token(item.ToString(), priority);
-                    _tokens.Add(token);
-                }
+                IsBracket(tokenSymbol);
+                IsDigit(Convert.ToChar(tokenSymbol), priority, ref tokenIndex);
+                IsOperator(tokenIndex, tokenSymbol, priority, _tokens);
             }
+        }
+
+        private void IsOperator(int tokenIndex, string symbol, int priority, List<Token> tokens)
+        {
+            if (!Config.Operators.Contains(symbol)) return;
+            Token predecessor = null;
+            Token successor = null;
+            if (tokenIndex > 0)
+                predecessor = _tokens[tokenIndex - 1];
+
+            if (tokenIndex < tokens.Count)
+                successor = _tokens[tokenIndex + 1];
+
+            var opToken = new Operator(symbol, priority, predecessor, successor);
+            _specifiedTokens.Add(opToken);
+        }
+        
+        private void IsBracket(string symbol)
+        {
+            if (symbol == "(")
+            {
+                _totalBrackets++;
+            }
+            else if (symbol == ")")
+            {
+                _totalBrackets--;
+            }
+        }
+
+        private void IsDigit(char symbol, int priority,ref int tokenIndex)
+        {
+            if (!char.IsDigit(symbol)) return;
+            var numericToken = ConvertTokenToNumeric(priority, ref tokenIndex);
+            _specifiedTokens.Add(numericToken);
+        }
+
+        private Numeric ConvertTokenToNumeric(int priority, ref int tokenIndex)
+        {
+            var completeNumber = string.Empty;
+            var counter = 0;
+            while (tokenIndex+counter < _tokens.Count && char.IsDigit(Convert.ToChar(_tokens[tokenIndex+counter].Symbol)))
+            {
+                completeNumber += _tokens[tokenIndex + counter].Symbol;
+                counter++;
+            }
+            
+            tokenIndex += --counter;
+            return new Numeric(completeNumber, _tokens[tokenIndex].Id, priority);
         }
         
         private int EvalPriorityByParenthesis()
         {
-            return _countOpenParenthesis - _countCloseParenthesis;
+            return _totalBrackets;
         }
-        
-        /*private int EvalPriorityByOperator(Token token)
-        {
-            return token.Priority + 1;
-        }*/
         
         private void MoveOperatorsToStack()
         {
-            var counter = 0;
-            while (counter <= _tokens.Max(token => token.Priority))
+            var priorityValue = 0;
+            while (priorityValue <= _specifiedTokens.Max(token => token.BracketPriority))
             {
-                var tokensGroup = _tokens.FindAll(token => token.Priority == counter && Config.Operators.Contains(token.Symbol));
-                _tokens.RemoveAll(token => token.Priority == counter && Config.Operators.Contains(token.Symbol));
+                var tokensGroup = _specifiedTokens.FindAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
+                _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
                 foreach (var token in tokensGroup)
                 {
                     _operatorStack.Push(token);
                 }
 
-                counter++;
+                priorityValue++;
             }
         }
 
         private void MoveNumbersToList()
         {
-            var counter = 0;
-            while (counter <= _tokens.Max(token => token.Priority))
+            var priorityValue = 0;
+            while (priorityValue <= _specifiedTokens.Max(token => token.BracketPriority))
             {
-                var tokensGroup = _tokens.FindAll(token => token.Priority == counter);
+                var tokensGroup = _specifiedTokens.FindAll(numToken => numToken.BracketPriority == priorityValue);
                 foreach (var token in tokensGroup)
                 {
                     _numericList.Add(token);
                 }
 
-                counter++;
+                priorityValue++;
             }
         }
     }

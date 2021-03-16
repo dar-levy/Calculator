@@ -1,14 +1,27 @@
+using System;
+using static System.Guid;
+
 namespace Calculator.Core.Entities
 {
     public class Token : IToken
     {
+        public Guid Id { get; }
         public string Symbol { get; }
-        public int Priority { get; }
+
+        public int BracketPriority { get; }
         
-        public Token(string symbol, int priority)
+        public Token(string symbol,int bracketPriority)
         {
+            Id = NewGuid();
             Symbol = symbol;
-            Priority = priority;
+            BracketPriority = bracketPriority;
+        }
+        
+        public Token(string symbol, Guid id, int bracketPriority)
+        {
+            Id = id;
+            Symbol = symbol;
+            BracketPriority = bracketPriority;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Calculator
             Console.WriteLine($"\nResult: {result}");
         }
 
-        private static string Solve((Stack<IToken>, List<IToken>) tokens)
+        private static string Solve((Stack<IToken>, List<Numeric>) tokens)
         {
             var tokenStack = tokens.Item1;
             var numericList = tokens.Item2;
@@ -38,7 +38,7 @@ namespace Calculator
             return numericList.Last().Symbol;
         }
         
-        private static IToken EvalSubResult(Stack<IToken> tokenStack, List<IToken> numericList)
+        private static Numeric EvalSubResult(Stack<IToken> tokenStack, List<Numeric> numericList)
         {
             var rightOperand = GetLastTokenInList(numericList);
             var leftOperand = GetLastTokenInList(numericList);
@@ -46,19 +46,19 @@ namespace Calculator
             return Eval(leftOperand, rightOperand, op);
         }
 
-        private static double GetLastTokenInList(List<IToken> numericList)
+        private static double GetLastTokenInList(List<Numeric> numericList)
         {
             var lastNumber = numericList.Last();
             numericList.Remove(numericList.Last());
             return Convert.ToDouble(lastNumber.Symbol);
         }
 
-        private static IToken Eval(double leftOperand, double rightOperand, Func<double, double, double> op)
+        private static Numeric Eval(double leftOperand, double rightOperand, Func<double, double, double> op)
         {
             var lo = Convert.ToDouble(leftOperand);
             var ro = Convert.ToDouble(rightOperand);
             var subResult = op(lo, ro).ToString(CultureInfo.InvariantCulture);
-            var resultToken = new Token(subResult, 2);
+            var resultToken = new Numeric(subResult, 2);
             return resultToken;
         }
 
