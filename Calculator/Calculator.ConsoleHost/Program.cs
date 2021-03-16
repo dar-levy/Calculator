@@ -11,34 +11,31 @@ namespace Calculator
     {
         static void Main()
         {
-            var validator = new Validator();
-            var parser = new Parser();
-            
             Console.WriteLine("Please enter your equation :");
             var input = Console.ReadLine();
             
+            var validator = new Validator();
+            var parser = new Parser();
+            
             validator.Validate(input);
-            var tokens = parser.Parse(input);
-            var result = Solve(tokens);
+            parser.Parse(input);
+            var result = Solve(parser.OperatorStack, parser.NumericList);
 
             Console.WriteLine($"\nResult: {result}");
         }
 
-        private static string Solve((Stack<IToken>, List<Numeric>) tokens)
+        private static string Solve(Stack<IToken> operatorStack, List<IToken> numericList)
         {
-            var tokenStack = tokens.Item1;
-            var numericList = tokens.Item2;
-            
-            while (tokenStack.Count >= 1)
+            while (operatorStack.Count >= 1)
             {
-                var subResult = EvalSubResult(tokenStack, numericList);
+                var subResult = EvalSubResult(operatorStack, numericList);
                 numericList.Add(subResult);
             }
 
             return numericList.Last().Symbol;
         }
         
-        private static Numeric EvalSubResult(Stack<IToken> tokenStack, List<Numeric> numericList)
+        private static Numeric EvalSubResult(Stack<IToken> tokenStack, List<IToken> numericList)
         {
             var rightOperand = GetLastTokenInList(numericList);
             var leftOperand = GetLastTokenInList(numericList);
@@ -46,7 +43,7 @@ namespace Calculator
             return Eval(leftOperand, rightOperand, op);
         }
 
-        private static double GetLastTokenInList(List<Numeric> numericList)
+        private static double GetLastTokenInList(List<IToken> numericList)
         {
             var lastNumber = numericList.Last();
             numericList.Remove(numericList.Last());
@@ -55,9 +52,7 @@ namespace Calculator
 
         private static Numeric Eval(double leftOperand, double rightOperand, Func<double, double, double> op)
         {
-            var lo = Convert.ToDouble(leftOperand);
-            var ro = Convert.ToDouble(rightOperand);
-            var subResult = op(lo, ro).ToString(CultureInfo.InvariantCulture);
+            var subResult = op(leftOperand, rightOperand).ToString(CultureInfo.InvariantCulture);
             var resultToken = new Numeric(subResult, 2);
             return resultToken;
         }

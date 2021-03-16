@@ -11,25 +11,24 @@ namespace Calculator.Base
         private int _totalBrackets;
         private readonly List<Token> _tokens;
         private readonly List<IToken> _specifiedTokens;
-        private readonly List<IToken> _numericList;
-        private readonly Stack<IToken> _operatorStack;
+        public readonly List<IToken> NumericList;
+        public readonly Stack<IToken> OperatorStack;
         
         public Parser()
         {
             _tokens = new List<Token>();
             _specifiedTokens = new List<IToken>();
-            _numericList = new List<IToken>();
-            _operatorStack = new Stack<IToken>();
+            NumericList = new List<IToken>();
+            OperatorStack = new Stack<IToken>();
         }
         
-        public (Stack<IToken>, List<IToken>) Parse(string equation)
+        public void Parse(string equation)
         {
             var trimmedEquation = Trim(equation);
             ConvertStringToListOfTokens(trimmedEquation);
             SplitToTokens();
             MoveOperatorsToStack();
             MoveNumbersToList();
-            return (_operatorStack, _numericList);
         }
         
         private string Trim(string stringWithSpaces)
@@ -121,7 +120,7 @@ namespace Calculator.Base
                 _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
                 foreach (var token in tokensGroup)
                 {
-                    _operatorStack.Push(token);
+                    OperatorStack.Push(token);
                 }
 
                 priorityValue++;
@@ -136,7 +135,7 @@ namespace Calculator.Base
                 var tokensGroup = _specifiedTokens.FindAll(numToken => numToken.BracketPriority == priorityValue);
                 foreach (var token in tokensGroup)
                 {
-                    _numericList.Add(token);
+                    NumericList.Add(token);
                 }
 
                 priorityValue++;
