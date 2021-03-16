@@ -10,11 +10,21 @@ namespace Calculator.Core.Entities
 
         public int BracketPriority { get; }
         
+        public int OperatorPriority { get; }
+
         public Token(string symbol,int bracketPriority)
         {
             Id = NewGuid();
             Symbol = symbol;
             BracketPriority = bracketPriority;
+        }
+        
+        public Token(string symbol,int bracketPriority, int operatorPriority)
+        {
+            Id = NewGuid();
+            Symbol = symbol;
+            BracketPriority = bracketPriority;
+            OperatorPriority = operatorPriority;
         }
         
         public Token(string symbol, Guid id, int bracketPriority)

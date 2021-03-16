@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Calculator.Core.Entities;
 using Calculator.Base.config;
 using System.Linq;
+using System.Xml;
 
 namespace Calculator.Base
 {
@@ -58,7 +59,7 @@ namespace Calculator.Base
             }
         }
 
-        private void IsOperator(int tokenIndex, string symbol, int priority, List<Token> tokens)
+        private void IsOperator(int tokenIndex, string symbol, int bracketsPriority, List<Token> tokens)
         {
             if (!Config.Operators.Contains(symbol)) return;
             Token predecessor = null;
@@ -69,8 +70,28 @@ namespace Calculator.Base
             if (tokenIndex < tokens.Count)
                 successor = _tokens[tokenIndex + 1];
 
-            var opToken = new Operator(symbol, priority, predecessor, successor);
+            var operatorPriority = EvalOperatorPriority(symbol);         
+            var opToken = new Operator(symbol, bracketsPriority, predecessor, successor, operatorPriority);
             _specifiedTokens.Add(opToken);
+        }
+
+        private int EvalOperatorPriority(string symbol)
+        {
+            switch (symbol)
+            {
+                case "+":
+                    return 0;
+                case "-":
+                    return 0;
+                case "*":
+                    return 1;
+                case "/":
+                    return 1;
+                case "^":
+                    return 2;
+                default:
+                    return -1;
+            }
         }
         
         private void IsBracket(string symbol)
@@ -118,15 +139,35 @@ namespace Calculator.Base
             {
                 var tokensGroup = _specifiedTokens.FindAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
                 _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
-                foreach (var token in tokensGroup)
+                var orderedByOperatorLevelGroup = OrderOperatorsByPriority(tokensGroup);
+                foreach (var operatorToken in orderedByOperatorLevelGroup)
                 {
-                    OperatorStack.Push(token);
+                    OperatorStack.Push(operatorToken);
                 }
 
                 priorityValue++;
             }
         }
 
+        private List<IToken> OrderOperatorsByPriority(List<IToken> operators)
+        {
+            var orderedOperators = new List<IToken>();
+            var priorityValue = 0;
+            while (priorityValue <= operators.Max(op => op.OperatorPriority))
+            {
+                var operatorsGroup = operators.FindAll(opToken => opToken.OperatorPriority == priorityValue);
+                foreach (var operatorToken in operatorsGroup)
+                {
+                    Console.WriteLine(operatorToken.Symbol);
+                    orderedOperators.Add(operatorToken);
+                }
+
+                priorityValue++;
+            }
+
+            return orderedOperators;
+        }
+        
         private void MoveNumbersToList()
         {
             var priorityValue = 0;

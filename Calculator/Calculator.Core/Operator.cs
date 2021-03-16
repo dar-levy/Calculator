@@ -7,13 +7,14 @@ namespace Calculator.Core.Entities
         protected IToken LeftOperand;
         protected IToken RightOperand;
         public string Symbol { get; }
-        public int Priority { get; set; }
+        public int OperatorPriority { get; }
 
-        public Operator(string symbol, int bracketPriority, IToken leftOperand, IToken rightOperand):base(symbol, bracketPriority)
+        public Operator(string symbol, int bracketPriority, IToken leftOperand, IToken rightOperand, int operatorPriority):base(symbol, bracketPriority, operatorPriority)
         {
             Symbol = symbol;
             LeftOperand = leftOperand;
             RightOperand = rightOperand;
+            OperatorPriority = operatorPriority;
         }
 
         public virtual double Calculate()

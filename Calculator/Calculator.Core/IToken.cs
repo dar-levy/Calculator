@@ -17,5 +17,10 @@ namespace Calculator.Core.Entities
         {
             get;
         }
+
+        int OperatorPriority
+        {
+            get;
+        }
     }
 }
