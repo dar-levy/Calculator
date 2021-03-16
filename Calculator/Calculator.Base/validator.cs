@@ -51,13 +51,13 @@ namespace Calculator.Base
             {
                 case '(':
                     _openParensCounter++;
-                    break;
+                    return;
                 case ')':
                     _closeParensCounter++;
-                    break;
+                    return;
             }
 
-            if (item.Equals(items.Last()) && _openParensCounter != _closeParensCounter || _closeParensCounter > _openParensCounter)
+            if ((item.Equals(items.Last()) && _openParensCounter != _closeParensCounter) || _closeParensCounter > _openParensCounter)
             {
                 throw new Exception("You're missing parenthesis");
             }
