@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Calculator.Core.Entities;
-using Calculator.Base.config;
 using System.Linq;
+using System.Security.Permissions;
 using System.Xml;
+using static Calculator.Base.config.Config;
 
 namespace Calculator.Base
 {
@@ -28,8 +29,20 @@ namespace Calculator.Base
             var trimmedEquation = Trim(equation);
             ConvertStringToListOfTokens(trimmedEquation);
             SplitToTokens();
+            DetermineOperandsOfOperators();
             MoveOperatorsToStack();
             MoveNumbersToList();
+        }
+
+        private void DetermineOperandsOfOperators()
+        {
+            for (var i = 1; i < _specifiedTokens.Count - 1; i++)
+            {
+                var predecessor = _specifiedTokens[i - 1];
+                var successor = _specifiedTokens[i + 1];
+                _specifiedTokens[i].LeftOperand = char.IsDigit(Convert.ToChar(predecessor.Symbol)) ? predecessor : null;
+                _specifiedTokens[i].RightOperand = char.IsDigit(Convert.ToChar(successor.Symbol)) ? successor : null;
+            }
         }
         
         private string Trim(string stringWithSpaces)
@@ -61,14 +74,14 @@ namespace Calculator.Base
 
         private void IsOperator(int tokenIndex, string symbol, int bracketsPriority, List<Token> tokens)
         {
-            if (!Config.BinaryOperators.Contains(symbol) && !Config.UnaryOperators.Contains(symbol)) return;
+            if (!BinaryOperators.Contains(symbol) && !UnaryOperators.Contains(symbol)) return;
             Token predecessor = null;
             Token successor = null;
             if (tokenIndex > 0)
                 predecessor = char.IsDigit(Convert.ToChar(_tokens[tokenIndex - 1].Symbol)) ? _tokens[tokenIndex - 1] : null;
 
-            if (tokenIndex < tokens.Count)
-                successor = _tokens[tokenIndex + 1];
+            if (tokenIndex < tokens.Count - 1)
+                successor = char.IsDigit(Convert.ToChar(_tokens[tokenIndex + 1].Symbol)) ? _tokens[tokenIndex + 1] : null;
 
             var operatorPriority = EvalOperatorPriority(symbol);
             var opToken = new Operator(symbol, bracketsPriority, predecessor, successor, operatorPriority);
@@ -134,8 +147,13 @@ namespace Calculator.Base
             var priorityValue = 0;
             while (priorityValue <= _specifiedTokens.Max(token => token.BracketPriority))
             {
-                var tokensGroup = _specifiedTokens.FindAll(opToken => opToken.BracketPriority == priorityValue && ( Config.UnaryOperators.Contains(opToken.Symbol) || Config.BinaryOperators.Contains(opToken.Symbol)));
-                _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && Config.BinaryOperators.Contains(opToken.Symbol));
+                var tokensGroup = _specifiedTokens.FindAll(opToken => opToken.BracketPriority == priorityValue && ( UnaryOperators.Contains(opToken.Symbol) || BinaryOperators.Contains(opToken.Symbol)));
+                if (tokensGroup.Count == 0)
+                {
+                    priorityValue++;
+                    continue;
+                };
+                _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && (UnaryOperators.Contains(opToken.Symbol) || BinaryOperators.Contains(opToken.Symbol)));
                 var orderedByOperatorLevelGroup = OrderOperatorsByPriority(tokensGroup);
                 foreach (var operatorToken in orderedByOperatorLevelGroup)
                 {

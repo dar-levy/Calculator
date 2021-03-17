@@ -23,14 +23,8 @@ namespace Calculator.Core.Entities
             get;
         }
 
-        IToken RightOperand
-        {
-            get;
-        }
-        
-        IToken LeftOperand
-        {
-            get;
-        }
+        IToken RightOperand { get; set; }
+
+        IToken LeftOperand { get; set; }
     }
 }

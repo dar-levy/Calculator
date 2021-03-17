@@ -38,9 +38,7 @@ namespace Calculator
             double rightOperand;
             var op = opStack.Pop();
             var operatorFunctionality = GetOperatorFunctionality(op.Symbol);
-            Console.WriteLine(op.RightOperand);
-            Console.WriteLine(op.LeftOperand);
-            if (numericList.Exists(numberToken => numberToken.Id == op.LeftOperand.Id)  && numericList.Exists(numberToken => numberToken.Id == op.RightOperand.Id))
+            if (op.LeftOperand != null && op.RightOperand != null && numericList.Exists(numberToken => numberToken.Id == op.LeftOperand.Id)  && numericList.Exists(numberToken => numberToken.Id == op.RightOperand.Id))
             {
                 leftOperand = Convert.ToDouble(op.LeftOperand.Symbol);
                 rightOperand = Convert.ToDouble(op.RightOperand.Symbol);
@@ -53,8 +51,8 @@ namespace Calculator
             }
             else
             {
-                rightOperand = GetLastTokenInList(numericList);
-                leftOperand = GetLastTokenInList(numericList);
+                rightOperand = op.RightOperand == null ? 0 : GetLastTokenInList(numericList);
+                leftOperand = op.LeftOperand == null ? 0 : GetLastTokenInList(numericList);
             }
             
             return Eval(leftOperand, rightOperand, operatorFunctionality);
@@ -62,11 +60,11 @@ namespace Calculator
 
         private static double GetLastTokenInList(List<IToken> numericList)
         {
-            if (numericList.Last() == null) return 0;
+            if (numericList.Count == 0) return 0;
             var lastNumber = numericList.Last();
             numericList.Remove(numericList.Last());
+            
             return Convert.ToDouble(lastNumber.Symbol);
-
         }
 
         private static Numeric Eval(double leftOperand, double rightOperand, Func<double, double, double> op)

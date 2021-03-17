@@ -11,8 +11,8 @@ namespace Calculator.Core.Entities
         public int BracketPriority { get; }
         
         public int OperatorPriority { get; }
-        public IToken RightOperand { get; }
-        public IToken LeftOperand { get; }
+        public IToken RightOperand { get; set; }
+        public IToken LeftOperand { get; set; }
 
         public Token(string symbol,int bracketPriority)
         {
