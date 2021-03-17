@@ -13,20 +13,17 @@ namespace Calculator
         {
             Console.WriteLine("Please enter your equation :");
             var input = Console.ReadLine();
-            
             var validator = new Validator();
             var parser = new Parser();
-            
             validator.Validate(input);
             parser.Parse(input);
             var result = Solve(parser.OperatorStack, parser.NumericList);
-
             Console.WriteLine($"\nResult: {result}");
         }
 
         private static string Solve(Stack<IToken> operatorStack, List<IToken> numericList)
         {
-            while (operatorStack.Count >= 1)
+            while (operatorStack.Count > 0 )
             {
                 var subResult = EvalSubResult(operatorStack, numericList);
                 numericList.Add(subResult);
@@ -35,12 +32,14 @@ namespace Calculator
             return numericList.Last().Symbol;
         }
         
-        private static Numeric EvalSubResult(Stack<IToken> tokenStack, List<IToken> numericList)
+        private static Numeric EvalSubResult(Stack<IToken> opStack, List<IToken> numericList)
         {
             double leftOperand;
             double rightOperand;
-            var op = tokenStack.Pop();
+            var op = opStack.Pop();
             var operatorFunctionality = GetOperatorFunctionality(op.Symbol);
+            Console.WriteLine(op.RightOperand);
+            Console.WriteLine(op.LeftOperand);
             if (numericList.Exists(numberToken => numberToken.Id == op.LeftOperand.Id)  && numericList.Exists(numberToken => numberToken.Id == op.RightOperand.Id))
             {
                 leftOperand = Convert.ToDouble(op.LeftOperand.Symbol);
@@ -63,9 +62,11 @@ namespace Calculator
 
         private static double GetLastTokenInList(List<IToken> numericList)
         {
+            if (numericList.Last() == null) return 0;
             var lastNumber = numericList.Last();
             numericList.Remove(numericList.Last());
             return Convert.ToDouble(lastNumber.Symbol);
+
         }
 
         private static Numeric Eval(double leftOperand, double rightOperand, Func<double, double, double> op)

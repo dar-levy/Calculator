@@ -6,7 +6,7 @@ namespace Calculator.Core.Entities
     public class Token : IToken
     {
         public Guid Id { get; }
-        public string Symbol { get; }
+        public string Symbol { get; set; }
 
         public int BracketPriority { get; }
         
@@ -21,14 +21,14 @@ namespace Calculator.Core.Entities
             BracketPriority = bracketPriority;
         }
         
-        public Token(string symbol,int bracketPriority, int operatorPriority, IToken rightOperand, IToken leftOperand)
+        public Token(string symbol,int bracketPriority, int operatorPriority, IToken leftOperand, IToken rightOperand)
         {
             Id = NewGuid();
             Symbol = symbol;
             BracketPriority = bracketPriority;
             OperatorPriority = operatorPriority;
-            RightOperand = rightOperand;
             LeftOperand = leftOperand;
+            RightOperand = rightOperand;
         }
         
         public Token(string symbol, Guid id, int bracketPriority)

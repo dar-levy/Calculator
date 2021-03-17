@@ -61,16 +61,16 @@ namespace Calculator.Base
 
         private void IsOperator(int tokenIndex, string symbol, int bracketsPriority, List<Token> tokens)
         {
-            if (!Config.Operators.Contains(symbol)) return;
+            if (!Config.BinaryOperators.Contains(symbol) && !Config.UnaryOperators.Contains(symbol)) return;
             Token predecessor = null;
             Token successor = null;
             if (tokenIndex > 0)
-                predecessor = _tokens[tokenIndex - 1];
+                predecessor = char.IsDigit(Convert.ToChar(_tokens[tokenIndex - 1].Symbol)) ? _tokens[tokenIndex - 1] : null;
 
             if (tokenIndex < tokens.Count)
                 successor = _tokens[tokenIndex + 1];
 
-            var operatorPriority = EvalOperatorPriority(symbol);         
+            var operatorPriority = EvalOperatorPriority(symbol);
             var opToken = new Operator(symbol, bracketsPriority, predecessor, successor, operatorPriority);
             _specifiedTokens.Add(opToken);
         }
@@ -97,13 +97,10 @@ namespace Calculator.Base
         private void IsBracket(string symbol)
         {
             if (symbol == "(")
-            {
                 _totalBrackets++;
-            }
+            
             else if (symbol == ")")
-            {
                 _totalBrackets--;
-            }
         }
 
         private void IsDigit(char symbol, int priority,ref int tokenIndex)
@@ -137,8 +134,8 @@ namespace Calculator.Base
             var priorityValue = 0;
             while (priorityValue <= _specifiedTokens.Max(token => token.BracketPriority))
             {
-                var tokensGroup = _specifiedTokens.FindAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
-                _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && Config.Operators.Contains(opToken.Symbol));
+                var tokensGroup = _specifiedTokens.FindAll(opToken => opToken.BracketPriority == priorityValue && ( Config.UnaryOperators.Contains(opToken.Symbol) || Config.BinaryOperators.Contains(opToken.Symbol)));
+                _specifiedTokens.RemoveAll(opToken => opToken.BracketPriority == priorityValue && Config.BinaryOperators.Contains(opToken.Symbol));
                 var orderedByOperatorLevelGroup = OrderOperatorsByPriority(tokensGroup);
                 foreach (var operatorToken in orderedByOperatorLevelGroup)
                 {
