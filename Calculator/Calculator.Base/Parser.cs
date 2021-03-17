@@ -158,7 +158,6 @@ namespace Calculator.Base
                 var operatorsGroup = operators.FindAll(opToken => opToken.OperatorPriority == priorityValue);
                 foreach (var operatorToken in operatorsGroup)
                 {
-                    Console.WriteLine(operatorToken.Symbol);
                     orderedOperators.Add(operatorToken);
                 }
 

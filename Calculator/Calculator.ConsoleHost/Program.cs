@@ -37,10 +37,28 @@ namespace Calculator
         
         private static Numeric EvalSubResult(Stack<IToken> tokenStack, List<IToken> numericList)
         {
-            var rightOperand = GetLastTokenInList(numericList);
-            var leftOperand = GetLastTokenInList(numericList);
-            var op = GetOperatorFunctionality(tokenStack.Pop().Symbol);
-            return Eval(leftOperand, rightOperand, op);
+            double leftOperand;
+            double rightOperand;
+            var op = tokenStack.Pop();
+            var operatorFunctionality = GetOperatorFunctionality(op.Symbol);
+            if (numericList.Exists(numberToken => numberToken.Id == op.LeftOperand.Id)  && numericList.Exists(numberToken => numberToken.Id == op.RightOperand.Id))
+            {
+                leftOperand = Convert.ToDouble(op.LeftOperand.Symbol);
+                rightOperand = Convert.ToDouble(op.RightOperand.Symbol);
+                
+                //Clean list and stack
+                var leftOperandToRemove = numericList.Single(numericToken => numericToken.Id == op.LeftOperand.Id);
+                numericList.Remove(leftOperandToRemove);
+                var rightOperandToRemove = numericList.Single(numericToken => numericToken.Id == op.RightOperand.Id);
+                numericList.Remove(rightOperandToRemove);
+            }
+            else
+            {
+                rightOperand = GetLastTokenInList(numericList);
+                leftOperand = GetLastTokenInList(numericList);
+            }
+            
+            return Eval(leftOperand, rightOperand, operatorFunctionality);
         }
 
         private static double GetLastTokenInList(List<IToken> numericList)

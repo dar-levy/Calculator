@@ -22,5 +22,15 @@ namespace Calculator.Core.Entities
         {
             get;
         }
+
+        IToken RightOperand
+        {
+            get;
+        }
+        
+        IToken LeftOperand
+        {
+            get;
+        }
     }
 }

@@ -57,7 +57,7 @@ namespace Calculator.Base
                     return;
             }
 
-            if ((item.Equals(items.Last()) && _openParensCounter != _closeParensCounter) || _closeParensCounter > _openParensCounter)
+            if (_closeParensCounter > _openParensCounter)
             {
                 throw new Exception("You're missing parenthesis");
             }

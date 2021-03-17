@@ -11,6 +11,8 @@ namespace Calculator.Core.Entities
         public int BracketPriority { get; }
         
         public int OperatorPriority { get; }
+        public IToken RightOperand { get; }
+        public IToken LeftOperand { get; }
 
         public Token(string symbol,int bracketPriority)
         {
@@ -19,12 +21,14 @@ namespace Calculator.Core.Entities
             BracketPriority = bracketPriority;
         }
         
-        public Token(string symbol,int bracketPriority, int operatorPriority)
+        public Token(string symbol,int bracketPriority, int operatorPriority, IToken rightOperand, IToken leftOperand)
         {
             Id = NewGuid();
             Symbol = symbol;
             BracketPriority = bracketPriority;
             OperatorPriority = operatorPriority;
+            RightOperand = rightOperand;
+            LeftOperand = leftOperand;
         }
         
         public Token(string symbol, Guid id, int bracketPriority)
