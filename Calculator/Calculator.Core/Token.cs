@@ -6,7 +6,7 @@ namespace Calculator.Core
     public class Token : IToken
     {
         public Guid Id { get; }
-        public string Symbol { get; }
+        public string Symbol { get; set; }
         public int BracketPriority { get; }
         public int OperatorPriority { get; }
         public IToken RightOperand { get; set; }

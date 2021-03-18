@@ -30,8 +30,28 @@ namespace Calculator.Base
             ConvertStringToListOfTokens(trimmedEquation);
             SplitToTokens();
             DetermineOperandsOfOperators();
+            CheckForUnaryOperators();
             MoveOperatorsToStack();
             MoveNumbersToList();
+        }
+
+        private void CheckForUnaryOperators()
+        {
+            foreach (var token in _specifiedTokens)
+            {
+                if (token.Symbol != "-") continue;
+                var indexOfRightOperand = _specifiedTokens.FindIndex(innerToken => innerToken.Id == token.RightOperand.Id);
+                if (_specifiedTokens[indexOfRightOperand].BracketPriority != token.BracketPriority) continue;
+                _specifiedTokens[indexOfRightOperand].Symbol = $"-{_specifiedTokens[indexOfRightOperand].Symbol}";
+                if (token.LeftOperand == null)
+                {
+                    _specifiedTokens.Remove(token);
+                }
+                else
+                {
+                    token.Symbol = "+";
+                }
+            }
         }
 
         private void DetermineOperandsOfOperators()

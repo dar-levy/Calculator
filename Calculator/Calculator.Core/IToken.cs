@@ -8,10 +8,7 @@ namespace Calculator.Core
         {
             get;
         }
-        string Symbol
-        {
-            get;
-        }
+        string Symbol { get; set; }
 
         int BracketPriority
         {
