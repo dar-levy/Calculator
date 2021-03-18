@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Calculator.Base.config
+namespace Calculator.Base.Config
 {
     public class Config
     {

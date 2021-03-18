@@ -1,15 +1,13 @@
 using System;
 using static System.Guid;
 
-namespace Calculator.Core.Entities
+namespace Calculator.Core
 {
     public class Token : IToken
     {
         public Guid Id { get; }
-        public string Symbol { get; set; }
-
+        public string Symbol { get; }
         public int BracketPriority { get; }
-        
         public int OperatorPriority { get; }
         public IToken RightOperand { get; set; }
         public IToken LeftOperand { get; set; }
@@ -20,8 +18,8 @@ namespace Calculator.Core.Entities
             Symbol = symbol;
             BracketPriority = bracketPriority;
         }
-        
-        public Token(string symbol,int bracketPriority, int operatorPriority, IToken leftOperand, IToken rightOperand)
+
+        protected Token(string symbol,int bracketPriority, int operatorPriority, IToken leftOperand, IToken rightOperand)
         {
             Id = NewGuid();
             Symbol = symbol;
@@ -30,8 +28,8 @@ namespace Calculator.Core.Entities
             LeftOperand = leftOperand;
             RightOperand = rightOperand;
         }
-        
-        public Token(string symbol, Guid id, int bracketPriority)
+
+        protected Token(string symbol, Guid id, int bracketPriority)
         {
             Id = id;
             Symbol = symbol;

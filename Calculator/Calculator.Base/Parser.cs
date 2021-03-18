@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Calculator.Core.Entities;
 using System.Linq;
 using System.Security.Permissions;
 using System.Xml;
-using static Calculator.Base.config.Config;
+using Calculator.Core;
+using static Calculator.Base.Config.Config;
 
 namespace Calculator.Base
 {

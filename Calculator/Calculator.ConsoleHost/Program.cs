@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Calculator.Base;
-using Calculator.Core.Entities;
+using Calculator.Core;
 
 namespace Calculator
 {
     class Program
     {
-        static void Main()
+        public static void Main()
         {
-            Console.WriteLine("Please enter your equation :");
+            Console.Write("Calc: ");
             var input = Console.ReadLine();
             var validator = new Validator();
             var parser = new Parser();

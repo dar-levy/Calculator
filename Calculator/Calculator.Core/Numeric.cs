@@ -1,12 +1,9 @@
 using System;
-using static System.Guid;
 
-namespace Calculator.Core.Entities
+namespace Calculator.Core
 {
     public class Numeric : Token
     {
-        public string Symbol { get; }
-        
         public Numeric(string symbol, int bracketPriority) : base(symbol, bracketPriority)
         {
         }

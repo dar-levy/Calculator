@@ -1,6 +1,6 @@
 using System;
 
-namespace Calculator.Core.Entities
+namespace Calculator.Core
 {
     public interface IToken
     {
