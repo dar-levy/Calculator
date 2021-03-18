@@ -40,8 +40,8 @@ namespace Calculator.Base
             {
                 var predecessor = _specifiedTokens[i - 1];
                 var successor = _specifiedTokens[i + 1];
-                _specifiedTokens[i].LeftOperand = char.IsDigit(Convert.ToChar(predecessor.Symbol)) ? predecessor : null;
-                _specifiedTokens[i].RightOperand = char.IsDigit(Convert.ToChar(successor.Symbol)) ? successor : null;
+                _specifiedTokens[i].LeftOperand = char.IsDigit(Convert.ToChar(predecessor.Symbol[0])) ? predecessor : null;
+                _specifiedTokens[i].RightOperand = char.IsDigit(Convert.ToChar(successor.Symbol[0])) ? successor : null;
             }
         }
         

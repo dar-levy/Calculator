@@ -51,20 +51,25 @@ namespace Calculator
             }
             else
             {
-                rightOperand = op.RightOperand == null ? 0 : GetLastTokenInList(numericList);
-                leftOperand = op.LeftOperand == null ? 0 : GetLastTokenInList(numericList);
+                rightOperand = GetLastOperand(numericList);
+                leftOperand = op.LeftOperand == null ? 0 : PopOperand(numericList, op.LeftOperand);
             }
             
             return Eval(leftOperand, rightOperand, operatorFunctionality);
         }
 
-        private static double GetLastTokenInList(List<IToken> numericList)
+        private static double GetLastOperand(List<IToken> numericList)
         {
-            if (numericList.Count == 0) return 0;
-            var lastNumber = numericList.Last();
+            var lastOperand = numericList.Last();
             numericList.Remove(numericList.Last());
-            
-            return Convert.ToDouble(lastNumber.Symbol);
+            return Convert.ToDouble(lastOperand.Symbol);
+        }
+        
+        private static double PopOperand(List<IToken> numericList, IToken operand)
+        {
+            if (!numericList.Contains(operand)) return GetLastOperand(numericList);
+            numericList.Remove(operand);
+            return Convert.ToDouble(operand.Symbol);
         }
 
         private static Numeric Eval(double leftOperand, double rightOperand, Func<double, double, double> op)
