@@ -15,8 +15,9 @@ namespace Calculator.Base
             if (expression == null) return;
             CheckStandaloneParens(expression);
             CheckSuccessorOperators(expression);
-            foreach (var item in expression.Where(item => !char.IsWhiteSpace(item)))
+            foreach (var item in expression)
             {
+                if (char.IsWhiteSpace(item)) continue;
                 CheckUnknownToken(item);
                 CheckEdgesForOperators(expression);
                 CheckOpenCloseParens(item, expression);

@@ -11,13 +11,15 @@ namespace Calculator.Base
         public static void Run()
         {
             Console.Write("Calc: ");
+            
             var input = Console.ReadLine();
             var validator = new Validator();
             var parser = new Parser();
+            
             validator.Validate(input);
             parser.Parse(input);
-            var result = Solve(parser.OperatorStack, parser.NumericList);
-            Console.WriteLine($"\nResult: {result}");
+            
+            Console.WriteLine($"\nResult: {Solve(parser.OperatorStack, parser.NumericList)}");
         }
         
         private static string Solve(Stack<IToken> operatorStack, List<IToken> numericList)
